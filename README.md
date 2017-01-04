@@ -1,7 +1,12 @@
 ## Synopsis
 
 Frequency counter experiments with Arduino. The library implements two different approaches for reliable frequency counting
-and an ATTiny version. For more details visit [this blog post](http://dlacko.blogspot.nl/2017/01/arduino-frequency-counter-experiments.html)
+and an ATTiny version. For more details visit [this blog post](http://dlacko.blogspot.nl/2017/01/arduino-frequency-counter-experiments.html).
+
+All of the implementations uses 100 ms gate time, and have a blocking API. 
+
+For higher frequencies, it might be benefical to disable Timer0 before the measurement. The library does not do that as
+it may break other parts of the application (time measurements, PWM, ...).
 
 ## Implementations
 
