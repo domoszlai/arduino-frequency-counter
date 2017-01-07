@@ -18,6 +18,7 @@ It is very generally usable as pin-change interrupts are available for many/most
 * frequency_counter_attiny.cpp: counting on ATTiny
 
 The Pin-Change Interrupt based method ported to ATTiny. It should work on all of the ATTiny chips, except ATTiny13.
+You probably want to use at least 8MHz clock frequency for counting (please note that the minimal voltage requirement of the chip depends on the clock frequency).
 
 * frequency_counter_TC.cpp: counting with a hardware timer/counter
 
