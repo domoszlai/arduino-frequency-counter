@@ -54,7 +54,10 @@ ISR(TIM1_COMPA_vect)
 {
   if (_tickCount == GATETIME_CLICKS) 
   {
-    _freq = _pulseCount * 10;   // based on 100ms
+    // On ATTtiny, PCI is triggered on both rising and falling edge,
+    // use only half of the pulseCount      
+      
+    _freq = _pulseCount * 5;    // based on 100ms
     _ready = 1;
 
     TIMSK &= ~_BV(OCIE1A);      // disable Timer1 Interrupt
