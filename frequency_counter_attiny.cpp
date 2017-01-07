@@ -34,7 +34,7 @@ unsigned long count_frequency(uint8_t pin)
   TCCR1 = _BV(CTC1);            // CTC mode
 
 #if F_CPU == 20000000 || F_CPU == 16000000 || F_CPU == 8000000
-  TCCR1 |= _BV(CS11);           // prescale: 8
+  TCCR1 |= _BV(CS12);           // prescale: 8
 #elif F_CPU == 1000000
   TCCR1 |= _BV(CS10);           // no prescale
 #endif
