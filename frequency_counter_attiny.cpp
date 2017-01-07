@@ -5,31 +5,32 @@ volatile unsigned long _freq;
 volatile unsigned long _pulseCount;
 // tick counter for gate time  measurement
 volatile unsigned int _tickCount;
-volatile uint8_t _ready; // becomes 1 when gate time is elapsed 
+volatile uint8_t _ready; // becomes 1 when gate time is elapsed
 
-#if F_CPU == 20000000 
-  #define GATETIME_CLICKS 1000
+#if F_CPU == 20000000
+#define GATETIME_CLICKS 1000
 #elif F_CPU == 16000000
-  #define GATETIME_CLICKS 800
+#define GATETIME_CLICKS 800
 #else
-  #define GATETIME_CLICKS 400
-#endif 
+#define GATETIME_CLICKS 400
+#endif
 
-void counter_interrupt()
+ISR(PCINT0_vect)
 {
   _pulseCount++;
 }
 
 unsigned long count_frequency(uint8_t pin)
 {
-  attachInterrupt(pin, counter_interrupt, RISING);
-
   noInterrupts();
-  
+
   _tickCount = 0;
   _pulseCount = 0;
   _ready = 0;
-           
+
+  GIMSK = 0b00100000;
+  PCMSK |= _BV(pin);
+
   // Set up Timer1 for gate time measurement.
   TCCR1 = _BV(CTC1);            // CTC mode
 
@@ -41,18 +42,19 @@ unsigned long count_frequency(uint8_t pin)
 
   OCR1C = 250;
   TIMSK |= _BV(OCIE1A);         // enable Timer1 interrupt
-  interrupts();    
+  interrupts();
 
-  while(_ready == 0){}          // Wait for gate time
+  while (_ready == 0) {}        // Wait for gate time
 
-  detachInterrupt(pin);
-  
-  return _freq;
+  PCMSK = 0;
+  GIMSK = 0;
+
+  return _freq; 
 }
 
-ISR(TIM1_COMPA_vect) 
+ISR(TIM1_COMPA_vect)
 {
-  if (_tickCount == GATETIME_CLICKS) 
+  if (_tickCount == GATETIME_CLICKS)
   {
     // On ATTtiny, PCI is triggered on both rising and falling edge,
     // use only half of the pulseCount      
