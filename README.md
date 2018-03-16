@@ -1,7 +1,7 @@
 ## Synopsis
 
 Frequency counter experiments with Arduino. The library implements two different approaches for reliable frequency counting
-and an ATTiny version. For more details visit [this blog post](http://dlacko.blogspot.nl/2017/01/arduino-frequency-counter-experiments.html).
+and an ATTiny version. For more details visit [this blog post](http://dlacko.org/blog/2017/01/04/arduino-frequency-counter-experiments/).
 
 All of the implementations uses 100 ms gate time, and have a blocking API. 
 
@@ -25,7 +25,3 @@ You probably want to use at least 8MHz clock frequency for counting (please note
 This the most reliable method that (supposedly) works for up to several MHz. It uses one timer for gate time measurement and a hardware timer/counter (TC) for counting the pulses. 
 However, the hardware counter requires the usage of one specific pin, what can be very impractical in some situations. It must be the T1 pin (usually pin 5) for most boards, 
 but T5 (pin 47) in the case of an Arduino Mega.
-
-
- 
-
